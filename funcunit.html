@@ -12,32 +12,5 @@
     <h2 id="qunit-userAgent"></h2>
     <ol id="qunit-tests"></ol>
     <div id="qunit-test-area"></div>
-    <script type='text/ejs' id='form'>
-      <% var f = getFormBuilder(blog,{wrapper: '//form_builder/views/default.ejs'}) %>
-      <form>
-        <%= f.text_field('title') %>
-        <%= f.password_field( 'password') %>
-        <%= f.hidden_field('status') %>
-        <%= f.text_area('lead') %>
-
-        <%= f.check_box('is_published', {value: 121, wrapper: '//form_builder/views/checkbox.ejs'})%>
-
-        <%= f.check_box('is_published2', {value: 121, class: 'multiple', multiple: true, checked: true, wrapper: '//form_builder/views/checkbox.ejs'})%>
-        <%= f.check_box('is_published2', {value: 122, class: 'multiple', multiple: true, wrapper: '//form_builder/views/checkbox.ejs'})%>
-
-        <%= f.select('io', ['a','b']) %>
-        <%= f.select('io', ['a','b'], {multiple: true, value: 'b'}) %>
-        <div class="comments">
-          <% f.fields_for('comments', function(g, index){ %>
-            <%= g.text_field('id') %>
-            <%= g.text_area('text') %>
-            <% g.fields_for('user_attributes', g.model.user, function(i){ %>
-              <%= i.text_field('name') %>
-            <% }) %>
-          <% }) %>
-        </div>
-      </form>
-
-    </script>
   </body>
 </html>
