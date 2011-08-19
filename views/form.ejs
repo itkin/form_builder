@@ -1,5 +1,4 @@
-<% var f = getFormBuilder(blog,{wrapper: '//form_builder/views/default.ejs'}) %>
-<form>
+<% form_for(blog, { wrapper: '//form_builder/views/default.ejs'}, function(f){ %>
   <%= f.text_field('title', {label: 'titre'}) %>
   <%= f.password_field( 'password', {label: 'password'}) %>
   <%= f.hidden_field('status') %>
@@ -21,4 +20,5 @@
       <% }) %>
     <% }) %>
   </div>
-</form>
+<% }) %>
+
