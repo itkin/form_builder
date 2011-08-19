@@ -12,8 +12,8 @@ steal.plugins(
       form_for: function(modelInstance, options,callback){
         if (!callback){
           callback = options
+          options = {}
         }
-        options = options || {}
         var f = this.getFormBuilder(modelInstance)
         callback(f)
         //return '<form>'+callback(f)+'</form>'
