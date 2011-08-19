@@ -9,7 +9,17 @@ steal.plugins(
     var underscore = $.String.underscore
 
     $.Class.extend('FormBuilder',{
+      form_for: function(modelInstance, options,callback){
+        if (!callback){
+          callback = options
+        }
+        options = options || {}
+        var f = this.getFormBuilder(modelInstance)
+        callback(f)
+        //return '<form>'+callback(f)+'</form>'
+      },
       getFormBuilder: function(modelInstance, options){
+        options = options || {}
         return new FormBuilder({model: modelInstance, viewContext: this, wrapper: options.wrapper})
       }
     },{
@@ -43,7 +53,7 @@ steal.plugins(
             this._renderFieldsFor(assoc[i],basename, proc, i)
           }
         } else {
-          this._renderFieldsFor(assoc,basename, proc)
+          return this._renderFieldsFor(assoc,basename, proc)
         }
       },
 
@@ -63,25 +73,34 @@ steal.plugins(
 
 
     $.each(['select','hidden_field','check_box','text_field', 'password_field', 'text_area',''], function(i,fn){
-      FormBuilder.prototype[fn] = function(){
-        var args = $.makeArray(arguments),
-            wrapper;
 
-        if (args[args.length-1].constructor == Object && args[args.length-1].hasOwnProperty('wrapper')){
-          wrapper = args[args.length-1]['wrapper'];
-          delete args[args.length-1]['wrapper'];
-        } else if (this.wrapper){
-          wrapper = this.wrapper
+      FormBuilder.prototype[fn] = function(){
+
+        var args = $.makeArray(arguments),
+            opts = {wrapper: this.wrapper};
+
+        // get some passing variable form the original html_option and remove their keys
+        if (args[args.length-1].constructor == Object){
+          $.each(['label', 'hint', 'errors', 'wrapper'], function(i,key){
+            if (args[args.length-1].hasOwnProperty(key)){
+              opts[key] = args[args.length-1][key]
+              delete args[args.length-1][key]
+            }
+          });
         }
 
-        if (wrapper && fn != 'hidden_field'){
-          return $.View(wrapper, {
+        if (opts['wrapper'] && fn != 'hidden_field'){
+          opts = $.extend({
             input: this.viewContext[fn].apply(this.viewContext, [this].concat(args)),
-            builder: this,
             model: this.model,
+            basename: this.basename,
             property: args[0],
+            label: null,
+            hint: null,
+            errors: null,
             options: (args[args.length-1].constructor == Object) ? args[args.length-1] : {}
-          })
+          }, opts)
+          return $.View(opts['wrapper'], opts)
         }else{
           return this.viewContext[fn].apply(this.viewContext, [this].concat(args))
         }
@@ -90,5 +109,5 @@ steal.plugins(
       }
     });
 
-    $.extend($.EJS.Helpers.prototype, {getFormBuilder: FormBuilder.getFormBuilder});
+    $.extend($.EJS.Helpers.prototype, {form_for: FormBuilder.form_for, getFormBuilder: FormBuilder.getFormBuilder});
   });
