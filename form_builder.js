@@ -11,13 +11,18 @@ steal.plugins(
     $.Class.extend('FormBuilder',{
       getFormBuilder: function(modelInstance, options){
         options = options || {}
-        return new FormBuilder({model: modelInstance, viewContext: this, wrapper: options.wrapper})
+        return new FormBuilder({
+          model: modelInstance,
+          viewContext: this,
+          wrapper: options.wrapper,
+          basename: options.basename
+        })
       }
     },{
       init: function(options){
         this.viewContext= options.viewContext
         this.model = options.model
-        this.basename = options.hasOwnProperty('basename') ? options.basename : underscore(this.model.Class.shortName)
+        this.basename = options.basename ? options.basename : underscore(this.model.Class.shortName)
         this.wrapper = options.wrapper
         return this
       },
