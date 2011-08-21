@@ -20,13 +20,18 @@ steal.plugins(
       },
       getFormBuilder: function(modelInstance, options){
         options = options || {}
-        return new FormBuilder({model: modelInstance, viewContext: this, wrapper: options.wrapper})
+        return new FormBuilder({
+          model: modelInstance,
+          viewContext: this,
+          wrapper: options.wrapper,
+          basename: options.basename
+        })
       }
     },{
       init: function(options){
         this.viewContext= options.viewContext
         this.model = options.model
-        this.basename = options.hasOwnProperty('basename') ? options.basename : underscore(this.model.Class.shortName)
+        this.basename = options.basename ? options.basename : underscore(this.model.Class.shortName)
         this.wrapper = options.wrapper
         return this
       },
@@ -50,7 +55,7 @@ steal.plugins(
         if($.isArray(assoc)){
           var self = this;
           for(var i = 0; i < assoc.length; i++){
-            this._renderFieldsFor(assoc[i],basename, proc, i)
+            this._renderFieldsFor(assoc[i],basename+'['+i+']', proc, i)
           }
         } else {
           return this._renderFieldsFor(assoc,basename, proc)
