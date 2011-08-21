@@ -46,7 +46,7 @@ steal.plugins(
         if($.isArray(assoc)){
           var self = this;
           for(var i = 0; i < assoc.length; i++){
-            this._renderFieldsFor(assoc[i],basename, proc, i)
+            this._renderFieldsFor(assoc[i],basename+'['+i+']', proc, i)
           }
         } else {
           return this._renderFieldsFor(assoc,basename, proc)
