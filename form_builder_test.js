@@ -7,10 +7,10 @@ steal.plugins('funcunit').then(function(){
     });
 
     test("fields helpers", function(){
-      equals(S("#content input:eq(0)").val(), "my title", "text_field value is not properly defined");
-      equals(S("#content input:eq(0)").attr('name'), 'blog_post[title]', "input names are properly set")
-      equals(S("#content .comments input:first").attr('name'), 'blog_post[comments][id]', "basename is incremented as expected")
-      equals(S("#content .comments input:last").attr('name'), 'blog_post[comments][user_attributes][name]', "fields_for allow custom basename")
+      equals(S("form input:eq(0)").val(), "my title", "text_field value is not properly defined");
+      equals(S("form input:eq(0)").attr('name'), 'blog_post[title]', "input names are properly set")
+      equals(S("form .comments:first input:first").attr('name'), 'blog_post[comments][0][id]', "basename is incremented as expected")
+      equals(S("form .comments:first input:last").attr('name'), 'blog_post[comments][0][user_attributes][name]', "fields_for allow custom basename")
     });
 
     test('wrapper templates', function(){
