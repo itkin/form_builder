@@ -14,7 +14,7 @@ steal.plugins(
           callback = options
           options = {}
         }
-        var f = this.getFormBuilder(modelInstance)
+        var f = this.getFormBuilder(modelInstance, options)
         callback(f)
         //return '<form>'+callback(f)+'</form>'
       },
